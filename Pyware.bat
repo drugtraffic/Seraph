@@ -173,3 +173,6 @@ mkdir Pyware
 cd %appdata%\Pyware\
 if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
 goto config
+
+
+hihihi
