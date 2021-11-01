@@ -1,18 +1,15 @@
 :: ----------- Config ----------- ::
 
-
 @echo off
-chcp 65001 >nul
-cd C:\Program Files\Pyware\
+if not exist %appdata%\Pyware\ goto pywarefilesdownload
+:config
+chcp 65001
+cd %appdata%\Pyware\
 mode con lines=35 cols=100
 setlocal DisableDelayedExpansion
 title Pyware Console [Version 0.1]
-mkdir C:\PROGRA~1\Pyware >nul
-powershell -Command "Invoke-WebRequest pastebin.com/raw/KVp6xH4r -Outfile C:\PROGRA~1\Pyware\Pyware.bat"
-
 
 :: ----------- Variables ----------- ::
-
 
 for /f %%a in ('powershell Invoke-RestMethod api.ipify.org') do set PublicIP=%%a
 for /f %%a in ('powershell Invoke-RestMethod api64.ipify.org') do set PublicIPV6=%%a
@@ -33,7 +30,7 @@ echo.
 goto consoleinput
 
 
-:consoleinput rem Home
+:consoleinput
 set /p input= %USERNAME%@%user% ~ $ 
 set command=%input:~5,32%
 set color=%input:~6,32%
@@ -55,7 +52,7 @@ if ["%input%"] == ["ipconfiguration"] goto ipinfo rem Info about External IP, IP
 if ["%input%"] == ["credits"] goto credits rem Rediects you to a page that shows people who helped develeped Pyware. 
 if ["%input%"] == ["clear"] goto console rem Clears all previous commands.
 if ["%input%"] == ["cls"] goto console rem Clears all previous commands.
-if ["%input%"] == ["update"] goto update rem Updates Pyware Console to the latest and stable V. (Not Finished)
+if ["%input%"] == ["update"] goto update rem Updates Pyware Console to the latest and stable version. (Not Finished)
 if ["%input%"] == ["python"] goto python
 if ["%input%"] == [""] goto consoleinput
 if ["%input%"] == [" "] goto consoleinput
@@ -76,9 +73,13 @@ goto consoleinput
 
 
 :pping
-set tcpi=%input:~6,32%
-set tcpp=%input:~7,32%
+if not exist %appdata%\Pyware\paping.exe goto ppdownload
+cd %appdata%\Pyware\
 paping.exe google.com -p 80 -c 3
+goto consoleinput
+
+:ppdownload
+if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
 goto consoleinput
 
 
@@ -96,7 +97,7 @@ echo   ipinfo                    Info about you're External IP, IPV4, and IPV6.
 echo.
 echo   credits                   Rediects you to a page that shows people who helped develeped Solar.
 echo.
-echo   update                    Updates Solar to the latest and stable V.
+echo   update                    Updates Solar to the latest and stable version.
 echo.
 echo   color                     Sets the default console foreground and background colors.
 echo.
@@ -123,7 +124,11 @@ goto consoleinput
 
 
 :titlereset
-Pyware Console [V 0.1]
+title Pyware Console [V 0.1]
+goto consoleinput
+
+:update
+powershell -Command "Invoke-WebRequest https://github.com/AA206yt/Pyware/archive/refs/heads/main.zip -Outfile %appdata%\Pyware\Pyware.bat" >nul
 goto consoleinput
 
 
@@ -161,3 +166,10 @@ goto consoleput
 :python
 python
 goto consoleinput
+
+:pywarefilesdownload
+cd %appdata%
+mkdir Pyware
+cd %appdata%\Pyware\
+if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
+goto config
