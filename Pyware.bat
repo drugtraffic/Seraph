@@ -14,12 +14,11 @@ REM  Copyright © Pyware 2021. All Rights Reserved.
 @echo off
 title Loading Pyware . . . 
 if not exist %appdata%\Pyware\ goto pywarefilesdownload
-if not exist %appdata%\Pyware\Pyware.bat goto pywarefilesdownload
 
 :config
 chcp 65001 >nul
-cd %appdata%\Pyware\
-SETLOCAL EnableDelayedExpansion
+cd %appdata%\Pyware\ >nul
+SETLOCAL EnableDelayedExpansion >nul
 for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (
   set "DEL=%%a"
 )
@@ -48,15 +47,15 @@ set /p input= %USERNAME%@%user% ~ #
 set command=%input:~5,32%
 set color=%input:~6,32%
 set title=%input:~6,32%
-set tcpi=%input:~6,32%
-set tcpp=%input:~7,32%
-if ["%input%"] == ["help"] goto help
-if ["%input%"] == ["ping %command%"] goto ping
-if ["%input%"] == ["color %color%"] goto color
-if ["%input%"] == ["title %title%"] goto title
+set tcpi=%input:~9,32%
+set tcpp=%input:~13,32%
+if ["%input%"] == ["help"] goto help REM Opens the help page.
+if ["%input%"] == ["ping %command%"] goto ping REM Pings an external IP.
+if ["%input%"] == ["color %color%"] goto color REM Sets the default console foreground and background colors.
+if ["%input%"] == ["title %title%"] goto title REM Sets the window title for a Pyware.exe session.
 if ["%input%"] == ["titlereset"] goto titlereset
 if ["%input%"] == ["webem"] goto webem
-if ["%input%"] == ["pping"] goto pping REM  Pings an external IP with TCP port. (Not Finished)
+if ["%input%"] == ["pping /i %tcpi%"] goto pping REM  Pings an external IP with TCP port. (Not Finished)
 if ["%input%"] == ["ddos"] goto ddos REM  Redirects you to a DDosing Console. (Not Finished)
 if ["%input%"] == ["ipl"] goto iplookup REM  Looks up approximate data for an external IP. (Not Finished)
 if ["%input%"] == ["ipinfo"] goto ipinfo REM  Info about you're External IP, IPV4, and IPV6.
@@ -70,10 +69,15 @@ if ["%input%"] == ["fixpyware"] goto fixpyware
 if ["%input%"] == ["python"] goto python
 if ["%input%"] == [""] goto consoleinput
 if ["%input%"] == [" "] goto consoleinput
+if ["%input%"] == ["  "] goto consoleinput
+if ["%input%"] == ["   "] goto consoleinput
+if ["%input%"] == ["    "] goto consoleinput
+if ["%input%"] == ["     "] goto consoleinput
 if ["%input%"] == ["x"] exit
 
 
 :invalid
+set input= 
 echo.
 echo '%input%' is not recognized as an internal or external command.
 echo.
@@ -85,15 +89,19 @@ set ip=%input:~5,32%
 ping %ip% -n 3
 goto consoleinput
 
+
 :: ----------- paping ----------- ::
 :pping
+set input= 
 cd %appdata%\Pyware\
-paping.exe google.com -p 80 -c 3
+set /p port= Port: 
+paping.exe %tcpi% -p %port% -c 3
 goto consoleinput
 :: ----------- paping ----------- ::
 
 
 :help
+set input= 
 echo.
 echo   ping ^<ip^>                 Pings an external IP.
 echo.
@@ -126,11 +134,14 @@ goto consoleinput
 
 
 :color
+set input= 
 color %color%
 goto consoleinput
 
 
+:: ----------- title ----------- ::
 :title
+set input= 
 title %title%
 goto consoleinput
 
@@ -138,8 +149,53 @@ goto consoleinput
 :titlereset
 title Pyware Console [V 0.1]
 goto consoleinput
+:: ----------- title ----------- ::
 
+
+:: ----------- webem ----------- ::
+
+:webem
+set input= 
+cls
+echo.
+echo                             ╔╗╔╗╔╗    ╔╗          
+echo                             ║║║║║║    ║║          
+echo                             ║║║║║║╔══╗║╚═╗╔══╗╔╗╔╗
+echo                             ║╚╝╚╝║║╔╗║║╔╗║║╔╗║║╚╝║
+echo                             ╚╗╔╗╔╝║║═╣║╚╝║║║═╣║║║║
+echo                              ╚╝╚╝ ╚══╝╚══╝╚══╝╚╩╩╝
+echo.                                       
+echo.
+echo                             [ 1 - New Webhook    ]
+echo                             [ 2 - Spammer        ]
+echo                             [ x - Back to pyware ]
+echo.
+set /p input= Input: 
+if ["%input%"] == ["1"] goto naval
+if ["%input%"] == ["2"] goto new
+if ["%input%"] == ["3"] goto spammer
+if ["%input%"] == ["x"] goto console
+
+:new
+set /p WebURL= Webhook URL: 
+set /p Webname= Webhook Name: 
+cls
+:input
+set /p say= Input: 
+if ["%say%"] == ["webhook stop"] goto webem
+set newweb=%WebURL%
+curl ^
+  -H "Content-Type: application/json" ^
+  -d "{\"username\": \"%Webname%\", \"content\": \"%say%\"}" ^
+  %newweb%
+goto input
+
+:: ----------- webem ----------- ::
+
+
+:: ----------- update ----------- ::
 :update
+set input= 
 if not "%1"=="am_admin" goto updateadmin
 powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/Pyware/main/Pyware.bat -Outfile C:\Users\%USERNAME%\Desktop\Pyware.bat"
 echo.
@@ -150,11 +206,13 @@ echo.
 goto consoleinput
 
 :updateadmin
+set input= 
 echo.
 echo Updating Pyware to the latest version requires administrator privledges.
 echo If you would like to grant administrator privledges please . . .
 pause
 if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
+:: ----------- update ----------- ::
 
 
 :ddos
@@ -166,6 +224,7 @@ exit
 
 
 :ipinfo
+set input= 
 echo.
 ipconfig | find /i "IPV4"
 echo.
@@ -179,6 +238,7 @@ goto consoleinput
 
 
 :credits
+set input= 
 echo.
 echo     [40;36m=====================================[40;37m
 echo     [40;36m=     Pythoral - Main Developer     =[40;37m
@@ -189,14 +249,16 @@ goto consoleput
 
 
 :python
+set input=  
 python
 goto consoleinput
 
 :fixpyware
+set input= 
 if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
-cd %appdata%
-mkdir Pyware
-cd %appdata%\Pyware\
+cd %appdata% >nul
+mkdir Pyware >nul
+cd %appdata%\Pyware\ >nul
 if not exist %appdata%\Pyware\Pyware.bat powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/Pyware/main/Pyware.bat -Outfile %appdata%\Pyware\Pyware.bat"
 if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
 goto consoleinput
@@ -204,8 +266,8 @@ goto consoleinput
 
 :pywarefilesdownload
 if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
-cd %appdata%
-mkdir Pyware
-cd %appdata%\Pyware\
+cd %appdata% >nul
+mkdir Pyware >nul
+cd %appdata%\Pyware\ >nul
 if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
 goto config
