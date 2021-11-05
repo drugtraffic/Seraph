@@ -38,12 +38,14 @@ goto console
 
 :console
 cls
+set input= 
 echo Pyware Console [Version 0.0]
 echo (c) Pyware. All rights reserved.
 echo.
 goto consoleinput
 
 :consoleinput
+set input= 
 set /p input= %USERNAME%@%user% ~ # 
 set pip=%input:~5,32%
 set dip=%input:~5,32%
@@ -99,9 +101,18 @@ goto consoleinput
 
 :: ----------- paping ----------- ::
 :pping
+if not "%1"=="am_admin" goto ppingadmin
 cd %appdata%\Pyware\
-paping.exe %tcpi% -p %tcpp% -c 3
+paping.exe %tcpi% -p 80 -c 3
 goto consoleinput
+
+:ppingadmin
+echo.
+echo Using the 'pping' command requires administrator privledges.
+echo If you would like to grant administrator privledges please
+echo press any key to continue . . .
+pause >nul
+if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
 :: ----------- paping ----------- ::
 
 
@@ -195,7 +206,8 @@ goto input
 :delwebhook
 cls
 set /p WebURL= Webhook URL: 
-curl -x "DELETE" %WebURL%
+CURL -X "DELETE" %WebURL%
+goto webem
 
 :webspam
 cls
@@ -234,14 +246,16 @@ goto consoleinput
 
 :updateadmin
 echo.
-echo Updating Pyware to the latest version requires administrator privledges.
-echo If you would like to grant administrator privledges please . . .
-pause
+echo Using the 'update' command requires administrator privledges.
+echo If you would like to grant administrator privledges please
+echo press any key to continue . . .
+pause >nul
 if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
 :: ----------- update ----------- ::
 
 
 :ddos
+cls
 set dargs=%input:~5,32%
 echo [38;2;220;95;255m█[38;2;185;95;255m█[38;2;180;95;255m█[38;2;175;95;255m█[38;2;170;95;255m█[38;2;165;95;255m█[38;2;160;95;255m╗[38;2;155;95;255m [38;2;150;95;255m█[38;2;145;95;255m█[38;2;140;95;255m╗[38;2;135;95;255m [38;2;130;95;255m [38;2;125;95;255m [38;2;120;95;255m█[38;2;115;95;255m█[38;2;110;95;255m╗██╗    ██╗ █████╗ [38;2;125;95;255m█[38;2;120;95;255m█[38;2;115;95;255m█[38;2;140;95;255m█[38;2;140;95;255m█[38;2;140;95;255m█[38;2;170;95;255m╗[38;2;165;95;255m [38;2;160;95;255m███████╗
 echo [38;2;220;95;255m█[38;2;185;95;255m█[38;2;180;95;255m╔[38;2;175;95;255m═[38;2;170;95;255m═[38;2;165;95;255m█[38;2;160;95;255m█[38;2;155;95;255m╗[38;2;150;95;255m╚[38;2;145;95;255m█[38;2;140;95;255m█[38;2;135;95;255m╗[38;2;130;95;255m [38;2;125;95;255m█[38;2;120;95;255m█[38;2;115;95;255m╔[38;2;110;95;255m╝██║    ██║██╔══██╗[38;2;125;95;255m█[38;2;120;95;255m█[38;2;115;95;255m╔[38;2;140;95;255m═[38;2;140;95;255m═[38;2;140;95;255m█[38;2;170;95;255m█[38;2;165;95;255m╗[38;2;160;95;255m██╔════╝
@@ -309,4 +323,4 @@ cd %appdata%\Pyware\ >nul
 if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
 goto config
 
-lll
+hihi
