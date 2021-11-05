@@ -46,18 +46,19 @@ goto consoleinput
 :consoleinput
 set /p input= %USERNAME%@%user% ~ # 
 set pip=%input:~5,32%
+set dip=%input:~5,32%
 set color=%input:~6,32%
 set title=%input:~6,32%
 set tcpi=%input:~9,32%
 set tcpp=%input:~20,32%
 if ["%input%"] == ["help"] goto help REM Opens the help page.
-if ["%input%"] == ["ping %command%"] goto ping REM Pings an external IP.
+if ["%input%"] == ["ping %pip%"] goto ping REM Pings an external IP.
 if ["%input%"] == ["color %color%"] goto color REM Sets the default console foreground and background colors.
 if ["%input%"] == ["title %title%"] goto title REM Sets the window title for a Pyware.exe session.
 if ["%input%"] == ["titlereset"] goto titlereset
 if ["%input%"] == ["webem"] goto webem
 if ["%input%"] == ["pping /i %tcpi%"] goto pping REM  Pings an external IP with TCP port. (Not Finished)
-if ["%input%"] == ["ddos %command%"] goto ddos REM  Redirects you to a DDosing Console. (Not Finished)
+if ["%input%"] == ["ddos %dip%"] goto ddos REM  Redirects you to a DDosing Console. (Not Finished)
 if ["%input%"] == ["ipl"] goto iplookup REM  Looks up approximate data for an external IP. (Not Finished)
 if ["%input%"] == ["ipinfo"] goto ipinfo REM  Info about you're External IP, IPV4, and IPV6.
 if ["%input%"] == ["ipconfig"] goto ipinfo REM  Info about External IP, IPV4, and IPV6.
@@ -79,6 +80,7 @@ if ["%input%"] == ["       "] goto consoleinput
 if ["%input%"] == ["        "] goto consoleinput
 if ["%input%"] == ["         "] goto consoleinput
 if ["%input%"] == ["          "] goto consoleinput
+if ["%input%"] == ["           "] goto consoleinput
 if ["%input%"] == ["x"] exit
 
 
@@ -109,7 +111,7 @@ echo   ping ^<ip^>                 Pings an external IP.
 echo.
 echo   pping ^<ip^> ^<port^>         Pings an external IP with TCP port.
 echo.
-echo   ddos ^<ip^>                     "downing routers like 9/11" -py
+echo   ddos ^<ip^>                 "downing routers like 9/11" -py
 echo.
 echo   ipl ^<ip^>                  Looks up approximate data for an external IP.
 echo.
@@ -227,8 +229,6 @@ if not "%1"=="am_admin" goto updateadmin
 powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/Pyware/main/Pyware.bat -Outfile %filepath%"
 echo.
 echo Successfully updated Pyware to the latest and stable version.
-echo.
-echo Updated File Directory: C:\Users\%USERNAME%\Desktop\Pyware.bat
 echo.
 goto consoleinput
 
