@@ -51,15 +51,15 @@ set pip=%input:~5,32%
 set dip=%input:~5,32%
 set color=%input:~6,32%
 set title=%input:~6,32%
-set tcpi=%input:~9,32%
-set tcpp=%input:~20,32%
+set ppi=%input:~6,32%
+set ppp=%input:~17,32%
 if ["%input%"] == ["help"] goto help REM Opens the help page.
 if ["%input%"] == ["ping %pip%"] goto ping REM Pings an external IP.
 if ["%input%"] == ["color %color%"] goto color REM Sets the default console foreground and background colors.
 if ["%input%"] == ["title %title%"] goto title REM Sets the window title for a Pyware.exe session.
 if ["%input%"] == ["titlereset"] goto titlereset
 if ["%input%"] == ["webem"] goto webem
-if ["%input%"] == ["pping /i %tcpi%"] goto pping REM  Pings an external IP with TCP port. (Not Finished)
+if ["%input%"] == ["pping %ppi%"] goto pping REM  Pings an external IP with TCP port. (Not Finished)
 if ["%input%"] == ["ddos %dip%"] goto ddos REM  Redirects you to a DDosing Console. (Not Finished)
 if ["%input%"] == ["ipl"] goto iplookup REM  Looks up approximate data for an external IP. (Not Finished)
 if ["%input%"] == ["ipinfo"] goto ipinfo REM  Info about you're External IP, IPV4, and IPV6.
@@ -103,7 +103,8 @@ goto consoleinput
 :pping
 if not "%1"=="am_admin" goto ppingadmin
 cd %appdata%\Pyware\
-paping.exe %tcpi% -p 80 -c 3
+set /p ppp= Port: 
+paping.exe %ppi% -p %ppp% -c 3
 goto consoleinput
 
 :ppingadmin
@@ -289,14 +290,13 @@ goto consoleinput
 
 
 :credits
-set input= 
 echo.
 echo     [40;36m=====================================[40;37m
 echo     [40;36m=     Pythoral - Main Developer     =[40;37m
 echo     [40;36m=     Duelawig - Main Developer     =[40;37m
 echo     [40;36m=====================================[40;37m
 echo.
-goto consoleput
+goto consoleinput
 
 
 :python
@@ -322,3 +322,6 @@ mkdir Pyware >nul
 cd %appdata%\Pyware\ >nul
 if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
 goto config
+
+
+hihi
