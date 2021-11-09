@@ -71,6 +71,7 @@ if ["%input%"] == ["5"] goto webem
 if ["%input%"] == ["2"] goto pping REM  Pings an external IP with TCP port. (Not Finished)
 if ["%input%"] == ["4"] goto ddos REM  Redirects you to a DDosing Console. (Not Finished)
 if ["%input%"] == ["7"] goto iplookup REM  Looks up approximate data for an external IP. (Not Finished)
+if ["%input%"] == ["8"] goto consoledownload
 if ["%input%"] == ["6"] goto ipinfo REM  Info about you're External IP, IPV4, and IPV6.
 if ["%input%"] == ["10"] goto credits REM  Rediects you to a page that shows people who helped develeped Pyware. 
 if ["%input%"] == ["11"] goto update REM  Updates Pyware Console to the latest and stable version. (Not Finished)
@@ -407,10 +408,22 @@ if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
 cd %appdata% >nul
 mkdir Pyware >nul
 cd %appdata%\Pyware\ >nul
-if not exist %appdata%\Pyware\Pyware.bat powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/Pyware/main/PywareMulti.bat -Outfile %filepath%"
+if not exist %appdata%\Pyware\PywareMulti.bat powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/Pyware/main/PywareMulti.bat -Outfile %filepath%"
 if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
 goto consoleinput
 
+:consoledownload
+if not "%1"=="am_admin" goto consoleadmin
+if not exist %appdata%\Pyware\Pyware.bat powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/Pyware/main/Pyware.bat -Outfile %appdata%\Pyware\Pyware.bat"
+call Pyware.bat
+goto consoleinput
+:consoleadmin
+echo.
+echo Using the 'console' command requires administrator privledges.
+echo If you would like to grant administrator privledges please
+echo press any key to continue . . .
+pause >nul
+if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
 
 :pywarefilesdownload
 if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
