@@ -38,6 +38,7 @@ goto console
 
 :console
 cls
+mode con lines=33 cols=100
 set input= 
 echo Pyware Console [Version 0.0]
 echo (c) Pyware. All rights reserved.
@@ -47,6 +48,7 @@ goto consoleinput
 :consoleinput
 set input= 
 set /p input= %USERNAME%@%user% ~ # 
+set ipli=%input:~4,32%
 set pip=%input:~5,32%
 set dip=%input:~5,32%
 set color=%input:~6,32%
@@ -61,7 +63,7 @@ if ["%input%"] == ["titlereset"] goto titlereset
 if ["%input%"] == ["webem"] goto webem
 if ["%input%"] == ["pping %ppi%"] goto pping REM  Pings an external IP with TCP port. (Not Finished)
 if ["%input%"] == ["ddos %dip%"] goto ddos REM  Redirects you to a DDosing Console. (Not Finished)
-if ["%input%"] == ["ipl"] goto iplookup REM  Looks up approximate data for an external IP. (Not Finished)
+if ["%input%"] == ["ipl %ipli%"] goto iplookup REM  Looks up approximate data for an external IP. (Not Finished)
 if ["%input%"] == ["ipinfo"] goto ipinfo REM  Info about you're External IP, IPV4, and IPV6.
 if ["%input%"] == ["ipconfig"] goto ipinfo REM  Info about External IP, IPV4, and IPV6.
 if ["%input%"] == ["ipconfiguration"] goto ipinfo REM  Info about External IP, IPV4, and IPV6.
@@ -169,6 +171,7 @@ goto consoleinput
 
 :webem
 cls
+title Webem
 echo.
 echo                             ╔╗╔╗╔╗    ╔╗          
 echo                             ║║║║║║    ║║          
@@ -271,12 +274,79 @@ timeout 3 >nul
 pause >nul
 goto main
 
-:ipl
-exit
+
+:: ----------- IPLookup ----------- ::
+:iplookup
+set IP=%input:~4,32%
+goto action
+:input
+:action
+if '%IP%'=='1.1.1.1' echo sUrl = "http://ipinfo.io/json" > %temp%\%webclient%.vbs & goto localip
+if '%IP%'=='127.0.0.1' echo sUrl = "http://ipinfo.io/json" > %temp%\%webclient%.vbs & goto localip
+goto iplookup
+goto input
+:iplookup
+echo sUrl = "http://ipinfo.io/%IP%/json" > %temp%\%webclient%.vbs
+:localip
+echo set oHTTP = CreateObject("MSXML2.ServerXMLHTTP.6.0") >> %temp%\%webclient%.vbs
+echo oHTTP.open "GET", sUrl,false >> %temp%\%webclient%.vbs
+echo oHTTP.setRequestHeader "Content-Type", "application/x-www-form-urlencoded" >> %temp%\%webclient%.vbs
+echo oHTTP.setRequestHeader "Content-Length", Len(sRequest) >> %temp%\%webclient%.vbs
+echo oHTTP.send sRequest >> %temp%\%webclient%.vbs
+echo HTTPGET = oHTTP.responseText >> %temp%\%webclient%.vbs
+echo strDirectory = "%temp%\response.txt" >> %temp%\%webclient%.vbs
+echo set objFSO = CreateObject("Scripting.FileSystemObject") >> %temp%\%webclient%.vbs
+echo set objFile = objFSO.CreateTextFile(strDirectory) >> %temp%\%webclient%.vbs
+echo objFile.Write(HTTPGET) >> %temp%\%webclient%.vbs
+echo objFile.Close >> %temp%\%webclient%.vbs
+rem echo Msgbox HTTPGET,vbSystemModal+vbOKOnly+vbInformation, "IP Info" >> %temp%\%webclient%.vbs
+echo Wscript.Quit >> %temp%\%webclient%.vbs
+start %temp%\%webclient%.vbs
+set /a requests=0
+echo.
+rem echo Waiting for API response. . .
+echo  Looking up IP Address. . .
+:checkresponseexists
+set /a requests=%requests% + 1
+if %requests% gtr 7 goto failed
+IF EXIST "%temp%\response.txt" (
+goto response_exist
+) ELSE (
+ping 127.0.0.1 -n 2 -w 1000 >nul
+goto checkresponseexists
+)
+:failed
+taskkill /f /im wscript.exe >nul
+del "%temp%\%webclient%.vbs" /f /q /s >nul
+echo.
+echo Did not receive a response from the API.
+echo.
+goto consoleinput
+:response_exist
+echo.
+for /f "delims= 	" %%i in ('findstr /i "ip hostname city region country loc org postal" %temp%\response.txt') do (
+	set data=%%i
+	set data=!data:,=!
+	set data=!data:""=Not Listed!
+	set data=!data:"=!
+	set data=!data:ip:=[40;36mIP:		![40;37m
+	set data=!data:hostname:=[40;36mHostname:	![40;37m
+	set data=!data:city:=[40;36mCity:		![40;37m
+	set data=!data:region:=[40;36mState:	![40;37m
+	set data=!data:country:=[40;36mCountry:	![40;37m
+	set data=!data:loc:=[40;36mLocation:	![40;37m
+	set data=!data:org:=[40;36mISP:		![40;37m
+	set data=!data:postal:=[40;36mPostal:	![40;37m
+	echo [40;36m!data![40;37m
+)
+echo.
+del "%temp%\%webclient%.vbs" /f /q /s >nul
+del "%temp%\response.txt" /f /q /s >nul
+goto consoleinput
+:: ----------- IPLookup ----------- ::
 
 
 :ipinfo
-set input= 
 echo.
 ipconfig | find /i "IPV4"
 echo.
@@ -300,12 +370,10 @@ goto consoleinput
 
 
 :python
-set input=  
 python
 goto consoleinput
 
 :fixpyware
-set input= 
 if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
 cd %appdata% >nul
 mkdir Pyware >nul
@@ -322,6 +390,5 @@ mkdir Pyware >nul
 cd %appdata%\Pyware\ >nul
 if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
 goto config
-
 
 hihi
