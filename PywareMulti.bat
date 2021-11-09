@@ -226,7 +226,7 @@ goto webspam
 :update
 cls
 if not "%1"=="am_admin" goto updateadmin
-powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/Pyware/main/Pyware.bat -Outfile %filepath%"
+powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/Pyware/main/PywareMulti.bat -Outfile %filepath%"
 echo.
 echo Successfully updated Pyware to the latest and stable version.
 echo.
@@ -407,7 +407,7 @@ if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
 cd %appdata% >nul
 mkdir Pyware >nul
 cd %appdata%\Pyware\ >nul
-if not exist %appdata%\Pyware\Pyware.bat powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/Pyware/main/Pyware.bat -Outfile %appdata%\Pyware\Pyware.bat"
+if not exist %appdata%\Pyware\Pyware.bat powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/Pyware/main/PywareMulti.bat -Outfile %filepath%"
 if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
 goto consoleinput
 
@@ -419,3 +419,5 @@ mkdir Pyware >nul
 cd %appdata%\Pyware\ >nul
 if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
 goto config
+
+ldaklsdjasd
