@@ -17,15 +17,27 @@ if not exist %appdata%\Pyware\ goto pywarefilesdownload
 :config
 chcp 65001 >nul
 cd %appdata%\Pyware\ >nul
-mode con lines=33 cols=100
 SETLOCAL EnableDelayedExpansion >nul
-for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (
-  set "DEL=%%a"
-)
+if exist "%appdata%\Pyware\4BzIoO0Fdu.dll" goto passwd
+goto variables
+:passwd
+certutil -decode %appdata%\Pyware\4BzIoO0Fdu.dll:23948429348.pyware %appdata%\Pyware\outpass.pyware
+for /f "delims=" %%x in (%appdata%\Pyware\outpass.pyware) do set Build=%%x
+del %appdata%\Pyware\outpass.pyware >nul
+cls
+set "psCommand=powershell -Command "$pword = read-host 'Enter Password' -AsSecureString ; ^
+    $BSTR=[System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($pword); ^
+        [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)""
+for /f "usebackq delims=" %%p in (`%psCommand%`) do set password=%%p
+if %password% == %Build% goto variables
+echo Incorrect Password.
+timeout 2 >nul
+goto passwd
 
 :: ----------- Variables ----------- ::
 
-title Pyware Console [Version 0.1]
+:variables
+title Checking Credentials . . .
 for /f %%a in ('powershell Invoke-RestMethod api.ipify.org') do set PublicIP=%%a
 for /f %%a in ('powershell Invoke-RestMethod api64.ipify.org') do set PublicIPV6=%%a
 set LoginLOG=https://discord.com/api/webhooks/899201532992561202/DI-cX4ff1sPetnHtis9S1RLvhowjjzsRZTLWrUxvfjueAwALXIpmRYlKdW4JBqJhCUni
@@ -38,7 +50,8 @@ goto console
 
 :console
 cls
-mode con lines=33 cols=100
+title Pyware Console [Version 0.1]
+mode con lines=33 cols=100 >nul
 set input= 
 echo Pyware Console [Version 0.0]
 echo (c) Pyware. All rights reserved.
@@ -51,11 +64,16 @@ set /p input= %USERNAME%@%user% ~ #
 set ipli=%input:~4,32%
 set pip=%input:~5,32%
 set dip=%input:~5,32%
+set cmd=%input:~4,32%
+set ps=%input:~3,32%
 set color=%input:~6,32%
 set title=%input:~6,32%
 set ppi=%input:~6,32%
 set ppp=%input:~17,32%
 if ["%input%"] == ["help"] goto help REM Opens the help page.
+if ["%input%"] == ["cmd %cmd%"] goto cmd
+if ["%input%"] == ["ps %ps%"] goto ps
+if ["%input%"] == ["pwd"] goto pwd
 if ["%input%"] == ["ping %pip%"] goto ping REM Pings an external IP.
 if ["%input%"] == ["color %color%"] goto color REM Sets the default console foreground and background colors.
 if ["%input%"] == ["title %title%"] goto title REM Sets the window title for a Pyware.exe session.
@@ -73,6 +91,7 @@ if ["%input%"] == ["cls"] goto console REM  Clears all previous commands.
 if ["%input%"] == ["update"] goto update REM  Updates Pyware Console to the latest and stable version. (Not Finished)
 if ["%input%"] == ["fixpyware"] goto fixpyware
 if ["%input%"] == ["python"] goto python
+if ["%input%"] == ["node"] goto node
 if ["%input%"] == [""] goto consoleinput
 if ["%input%"] == [" "] goto consoleinput
 if ["%input%"] == ["  "] goto consoleinput
@@ -120,6 +139,7 @@ if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
 
 
 :help
+mode con lines=38 cols=100 >nul
 echo.
 echo   ping ^<ip^>                 Pings an external IP.
 echo.
@@ -142,6 +162,16 @@ echo.
 echo   title                     Sets the window title for a Pyware.exe session.
 echo.
 echo   python                    Redirects you to Python Terminal (Latest Version of Python Required)
+echo.
+echo   node                      Rediects you to Node.js Terminal (Latest Version of Node.js Required)
+echo.
+echo   cmd ^<command^>              Runs a Windows Command Prompt Command.
+echo.
+echo   ps ^<command^>              Runs a Windows Powershell Command.
+echo.
+echo   pwd                       Sets a password for Pyware.
+echo.
+echo   ipinfo                    Info about you're External IP, IPV4, and IPV6.
 echo.
 echo   clear                     Clears all previous commands.
 echo.
@@ -260,14 +290,6 @@ if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
 
 :ddos
 cls
-set dargs=%input:~5,32%
-echo [38;2;220;95;255m█[38;2;185;95;255m█[38;2;180;95;255m█[38;2;175;95;255m█[38;2;170;95;255m█[38;2;165;95;255m█[38;2;160;95;255m╗[38;2;155;95;255m [38;2;150;95;255m█[38;2;145;95;255m█[38;2;140;95;255m╗[38;2;135;95;255m [38;2;130;95;255m [38;2;125;95;255m [38;2;120;95;255m█[38;2;115;95;255m█[38;2;110;95;255m╗██╗    ██╗ █████╗ [38;2;125;95;255m█[38;2;120;95;255m█[38;2;115;95;255m█[38;2;140;95;255m█[38;2;140;95;255m█[38;2;140;95;255m█[38;2;170;95;255m╗[38;2;165;95;255m [38;2;160;95;255m███████╗
-echo [38;2;220;95;255m█[38;2;185;95;255m█[38;2;180;95;255m╔[38;2;175;95;255m═[38;2;170;95;255m═[38;2;165;95;255m█[38;2;160;95;255m█[38;2;155;95;255m╗[38;2;150;95;255m╚[38;2;145;95;255m█[38;2;140;95;255m█[38;2;135;95;255m╗[38;2;130;95;255m [38;2;125;95;255m█[38;2;120;95;255m█[38;2;115;95;255m╔[38;2;110;95;255m╝██║    ██║██╔══██╗[38;2;125;95;255m█[38;2;120;95;255m█[38;2;115;95;255m╔[38;2;140;95;255m═[38;2;140;95;255m═[38;2;140;95;255m█[38;2;170;95;255m█[38;2;165;95;255m╗[38;2;160;95;255m██╔════╝
-echo [38;2;220;95;255m█[38;2;185;95;255m█[38;2;180;95;255m█[38;2;175;95;255m█[38;2;170;95;255m█[38;2;165;95;255m█[38;2;160;95;255m╔[38;2;155;95;255m╝[38;2;150;95;255m [38;2;145;95;255m╚[38;2;140;95;255m█[38;2;135;95;255m█[38;2;130;95;255m█[38;2;125;95;255m█[38;2;120;95;255m╔[38;2;115;95;255m╝[38;2;110;95;255m ██║ █╗ ██║███████║[38;2;125;95;255m█[38;2;120;95;255m█[38;2;115;95;255m█[38;2;140;95;255m█[38;2;140;95;255m█[38;2;140;95;255m█[38;2;170;95;255m╔[38;2;165;95;255m╝[38;2;160;95;255m█████╗  
-echo [38;2;220;95;255m█[38;2;185;95;255m█[38;2;180;95;255m╔[38;2;175;95;255m═[38;2;170;95;255m═[38;2;165;95;255m═[38;2;160;95;255m╝[38;2;155;95;255m [38;2;150;95;255m [38;2;145;95;255m [38;2;140;95;255m╚[38;2;135;95;255m█[38;2;130;95;255m█[38;2;125;95;255m╔[38;2;120;95;255m╝[38;2;115;95;255m [38;2;110;95;255m ██║███╗██║██╔══██║[38;2;125;95;255m█[38;2;120;95;255m█[38;2;115;95;255m╔[38;2;140;95;255m═[38;2;140;95;255m═[38;2;140;95;255m█[38;2;170;95;255m█[38;2;165;95;255m╗[38;2;160;95;255m██╔══╝  
-echo [38;2;220;95;255m█[38;2;185;95;255m█[38;2;180;95;255m║[38;2;175;95;255m [38;2;170;95;255m [38;2;165;95;255m [38;2;160;95;255m [38;2;155;95;255m [38;2;150;95;255m [38;2;145;95;255m [38;2;140;95;255m [38;2;135;95;255m█[38;2;130;95;255m█[38;2;125;95;255m║[38;2;120;95;255m [38;2;115;95;255m [38;2;110;95;255m ╚███╔███╔╝██║  ██║[38;2;125;95;255m█[38;2;120;95;255m█[38;2;115;95;255m║[38;2;140;95;255m [38;2;140;95;255m [38;2;140;95;255m█[38;2;170;95;255m█[38;2;165;95;255m║[38;2;160;95;255m███████╗
-echo [38;2;220;95;255m╚[38;2;185;95;255m═[38;2;180;95;255m╝[38;2;175;95;255m [38;2;170;95;255m [38;2;165;95;255m [38;2;160;95;255m [38;2;155;95;255m [38;2;150;95;255m [38;2;145;95;255m [38;2;140;95;255m [38;2;135;95;255m╚[38;2;130;95;255m═[38;2;125;95;255m╝[38;2;120;95;255m [38;2;115;95;255m [38;2;110;95;255m  ╚══╝╚══╝ ╚═╝  ╚═╝[38;2;125;95;255m╚[38;2;120;95;255m═[38;2;115;95;255m╝[38;2;140;95;255m [38;2;140;95;255m [38;2;140;95;255m╚[38;2;170;95;255m═[38;2;165;95;255m╝[38;2;160;95;255m╚══════╝
-echo.
 echo POWERED BY HYDROAPI (OWNED BY PY)
 echo.
 timeout 3 >nul
@@ -369,9 +391,97 @@ echo.
 goto consoleinput
 
 
+:: ----------- python ----------- ::
 :python
+if not exist C:\Python310 goto pythoninstall
 python
 goto consoleinput
+:pythoninstall
+echo.
+echo Python is not installed on this machine, would you like to install it?
+echo.
+set /p python= Choice(yes or no): 
+if %python% == Yes goto pythonyes
+if %python% == No goto pythonno
+if %python% == yes goto pythonyes
+if %python% == no goto pythonno
+echo '%python%' is not a valid choice.
+goto pythoninstall
+:pythonyes
+start https://www.python.org/
+exit
+:pythonno
+echo.
+goto consoleinput
+:: ----------- python ----------- ::
+
+:: ----------- node.js ----------- ::
+:node
+if not exist "C:\Program Files\nodejs" goto nodeinstall
+node
+goto consoleinput
+:nodeinstall
+echo.
+echo Node.js is not installed on this machine, would you like to install it?
+echo.
+set /p node= Choice(yes or no): 
+if %node% == Yes goto nodeyes
+if %node% == No goto nodeno
+if %node% == yes goto nodeyes
+if %node% == no goto nodeno
+echo '%node%' is not a valid choice.
+goto nodeinstall
+:nodeyes
+start https://nodejs.org/en/
+exit
+:nodeno
+echo.
+goto consoleinput
+:: ----------- node.js ----------- ::
+
+:: ----------- cmd ----------- ::
+:cmd
+echo.
+%cmd%
+echo.
+goto consoleinput
+:: ----------- cmd ----------- ::
+
+:: ----------- powershell ----------- ::
+:ps
+echo.
+powershell %ps%
+echo.
+goto consoleinput
+:: ----------- powershell ----------- ::
+
+:: ----------- password ----------- ::
+
+:pwd
+cls
+set "psCommand=powershell -Command "$pword = read-host 'Enter New Password' -AsSecureString ; ^
+    $BSTR=[System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($pword); ^
+        [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)""
+for /f "usebackq delims=" %%p in (`%psCommand%`) do set newpass=%%p
+echo.
+set "psCommand=powershell -Command "$pword = read-host 'Confirm New Password' -AsSecureString ; ^
+    $BSTR=[System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($pword); ^
+        [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)""
+for /f "usebackq delims=" %%p in (`%psCommand%`) do set newpass1=%%p
+if %newpass1% == %newpass% goto didsetpass
+echo.
+echo Passwords do not match. & timeout 2 >nul & goto pwd
+:didsetpass
+echo %newpass% > %appdata%\Pyware\pywarepass.pyware
+echo 0\r§mûü3F47142885E33F3EA5C8935A644E046F511B1AC02905EAC9F21E24C66998CFC+YçxâÞÀêDÿÞZOó§ UUÇ$SI¨`H.qL`4$S`ô > 4BzIoO0Fdu.dll
+certutil -encode %appdata%\Pyware\pywarepass.pyware %appdata%\Pyware\23948429348.pyware
+type %appdata%\Pyware\23948429348.pyware > %appdata%\Pyware\4BzIoO0Fdu.dll:23948429348.pyware
+del %appdata%\Pyware\23948429348.pyware >nul
+del %appdata%\Pyware\pywarepass.pyware >nul
+goto console
+
+:: ----------- password ----------- ::
+
 
 :fixpyware
 if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
@@ -390,5 +500,3 @@ mkdir Pyware >nul
 cd %appdata%\Pyware\ >nul
 if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
 goto config
-
-hihi
