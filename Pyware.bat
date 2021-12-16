@@ -62,15 +62,6 @@ cls
 title Pyware Console [Version 0.1]
 mode con lines=33 cols=80 >nul
 set input= 
-@REM echo                          ╔═╗╦ ╦╦ ╦╔═╗╦═╗╔═╗
-@REM echo                          ╠═╝╚╦╝║║║╠═╣╠╦╝║╣ 
-@REM echo                          ╩   ╩ ╚╩╝╩ ╩╩╚═╚═╝
-@REM echo	    [+]════════════════════[+]═══════════════════[+]
-@REM echo            ║                      ║                     ║
-@REM echo            ║                      ║                     ║
-@REM echo            ║                      ║                     ║
-@REM echo            ║                      ║                     ║
-@REM echo           [+]════════════════════[+]═══════════════════[+]
 echo [38;2;255;255;255mPyware Console [Version 0.0]
 echo (c) Pyware. All rights reserved.
 echo.
@@ -121,11 +112,18 @@ if ["%input%"] == ["        "] goto consoleinput
 if ["%input%"] == ["         "] goto consoleinput
 if ["%input%"] == ["          "] goto consoleinput
 if ["%input%"] == ["           "] goto consoleinput
+if ["%input%"] == ["            "] goto consoleinput
+if ["%input%"] == ["             "] goto consoleinput
+if ["%input%"] == ["              "] goto consoleinput
+if ["%input%"] == ["               "] goto consoleinput
+if ["%input%"] == ["                "] goto consoleinput
+if ["%input%"] == ["exit"] exit
 if ["%input%"] == ["x"] exit
 
 
 :invalid
 echo [38;2;0;255;255m
+echo  
 echo '%input%' is not recognized as an internal or external command.
 echo.
 goto consoleinput
@@ -421,10 +419,10 @@ goto consoleinput
 
 :credits
 echo [38;2;0;255;255m
-echo              =====================================
-echo              =     Pythoral - Main Developer     =
-echo              =     Duelawig - Main Developer     =
-echo              =====================================
+echo              [+]══════════════════[+]═════════════════[+]
+echo               ║        Pythoral - Main Developer       ║
+echo               ║        Duelawig - Main Developer       ║
+echo              [+]══════════════════[+]═════════════════[+]
 echo.
 goto consoleinput
 
@@ -464,11 +462,16 @@ goto consoleinput
 echo.
 echo Node.js is not installed on this machine, would you like to install it?
 echo.
-set /p node= Choice(yes or no): 
+set /p node= Choice(Y/N): 
 if %node% == Yes goto nodeyes
 if %node% == No goto nodeno
 if %node% == yes goto nodeyes
 if %node% == no goto nodeno
+if %node% == Y goto nodeyes
+if %node% == N goto nodeno
+if %node% == y goto nodeyes
+if %node% == n goto nodeno
+echo  
 echo '%node%' is not a valid choice.
 goto nodeinstall
 :nodeyes
@@ -511,15 +514,16 @@ set "psCommand=powershell -Command "$pword = read-host 'Confirm New Password' -A
 for /f "usebackq delims=" %%p in (`%psCommand%`) do set newpass1=%%p
 if %newpass1% == %newpass% goto didsetpass
 echo.
+echo  
 echo Passwords do not match. & timeout 2 >nul & goto pwd
 :didsetpass
-echo %newpass% > %appdata%\Pyware\pywarepass.pyware
+mkdir %temp%\Pyware\
+echo %newpass% > %temp%\Pyware\pywarepass.pyware
 echo function == {true} > %appdata%\Pyware\4BzIoO0Fdu.dll >nul
-certutil -encode %appdata%\Pyware\pywarepass.pyware %appdata%\Pyware\23948429348.pyware >nul
-type %appdata%\Pyware\23948429348.pyware > %appdata%\Pyware\4BzIoO0Fdu.dll:23948429348.pyware
-attrib +h %appdata%\Pyware\4BzIoO0Fdu.dll >nul
-del %appdata%\Pyware\23948429348.pyware >nul
-del %appdata%\Pyware\pywarepass.pyware >nul
+certutil -encode %temp%\Pyware\pywarepass.pyware %temp%\Pyware\23948429348.pyware >nul
+type %temp%\Pyware\23948429348.pyware > %appdata%\Pyware\4BzIoO0Fdu.dll:23948429348.pyware
+del %temp%\Pyware\23948429348.pyware >nul
+del %temp%\Pyware\pywarepass.pyware >nul
 cls
 echo.
 echo [40;36mSuccessfully updated password.
