@@ -1,32 +1,33 @@
 @echo off
-REM   ___                                      
-REM  (  _ \                                          
-REM  | |_) )_   _ _   _   _   _ _ _ __   __    
-REM  |  __/( ) ( ) ) ( ) ( )/ _  )  __)/ __ \        
-REM  | |   | (_) | \_/ \_/ | (_| | |  (  ___/        
-REM  (_)    \__  |\__/\___/ \__ _)_)   \____)        
-REM        ( )_| |                                   
-REM         \___/   
-REM  Copyright © Pyware 2021. All Rights Reserved.
+rem  ___                          _     
+rem (  _ \                       ( )    
+rem | (_(_)  __  _ __   _ _ _ _  | |__  
+rem  \__ \ / __ \  __)/ _  )  _ \|  _  \
+rem ( )_) |  ___/ |  ( (_| | (_) ) | | |
+rem  \____)\____)_)   \__ _)  __/(_) (_)
+rem                        | |          
+rem                        (_)          
+rem 
+REM  Copyright © Seraph 2021. All Rights Reserved.
 
 :: ----------- Config ----------- ::
 
-title Loading Pyware . . . 
-if not exist %appdata%\Pyware\ goto pywarefilesdownload
-if not exist %appdata%\Pyware\paping goto pywarefilesdownload
+title Loading Seraph . . . 
+if not exist %appdata%\Seraph\ goto Seraphfilesdownload
+if not exist %appdata%\Seraph\paping goto Seraphfilesdownload
 
 :config
 chcp 65001 >nul
-cd %appdata%\Pyware\ >nul
+cd %appdata%\Seraph\ >nul
 mode con lines=33 cols=80 >nul
 SETLOCAL EnableDelayedExpansion >nul
 if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit /b)
-if exist "%appdata%\Pyware\4BzIoO0Fdu.dll" goto passwd
+if exist "%appdata%\Seraph\4BzIoO0Fdu.dll" goto passwd
 goto variables
 :passwd
-certutil -decode %appdata%\Pyware\4BzIoO0Fdu.dll:23948429348.pyware %appdata%\Pyware\outpass.pyware
-for /f "delims=" %%x in (%appdata%\Pyware\outpass.pyware) do set Build=%%x
-del %appdata%\Pyware\outpass.pyware >nul
+certutil -decode %appdata%\Seraph\4BzIoO0Fdu.dll:23948429348.ser %appdata%\Seraph\outpass.ser
+for /f "delims=" %%x in (%appdata%\Seraph\outpass.ser) do set Build=%%x
+del %appdata%\Seraph\outpass.ser >nul
 cls
 set "psCommand=powershell -Command "$pword = read-host 'Enter Password' -AsSecureString ; ^
     $BSTR=[System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($pword); ^
@@ -58,11 +59,11 @@ set VOLSERIAL=%%a
 
 :console
 cls
-title Pyware Console [Version 0.1]
+title Seraph Console [Version 0.1]
 mode con lines=33 cols=80 >nul
 set input= 
-echo [38;2;255;255;255mPyware Console [Version 0.0]
-echo (c) Pyware. All rights reserved.
+echo [38;2;255;255;255mSeraph Console [Version 0.0]
+echo (c) Seraph. All rights reserved.
 echo.
 goto consoleinput
 
@@ -83,7 +84,7 @@ if ["%input%"] == ["cmd %cmd%"] goto cmd
 if ["%input%"] == ["ps %ps%"] goto ps
 if ["%input%"] == ["pwd"] goto pwd
 if ["%input%"] == ["ping %pip%"] goto ping REM Pings an external IP.
-if ["%input%"] == ["title %title%"] goto title REM Sets the window title for a Pyware.exe session.
+if ["%input%"] == ["title %title%"] goto title REM Sets the window title for a Seraph.exe session.
 if ["%input%"] == ["title reset"] goto titlereset
 if ["%input%"] == ["webem"] goto webem
 if ["%input%"] == ["pping %ppi%"] goto pping REM  Pings an external IP with TCP port. (Not Finished)
@@ -92,11 +93,11 @@ if ["%input%"] == ["ipl %ipli%"] goto iplookup REM  Looks up approximate data fo
 if ["%input%"] == ["ipinfo"] goto ipinfo REM  Info about you're External IP, IPV4, and IPV6.
 if ["%input%"] == ["ipconfig"] goto ipinfo REM  Info about External IP, IPV4, and IPV6.
 if ["%input%"] == ["ipconfiguration"] goto ipinfo REM  Info about External IP, IPV4, and IPV6.
-if ["%input%"] == ["credits"] goto credits REM  Rediects you to a page that shows people who helped develeped Pyware. 
+if ["%input%"] == ["credits"] goto credits REM  Rediects you to a page that shows people who helped develeped Seraph. 
 if ["%input%"] == ["clear"] goto console REM  Clears all previous commands.
 if ["%input%"] == ["cls"] goto console REM  Clears all previous commands.
-if ["%input%"] == ["update"] goto update REM  Updates Pyware Console to the latest and stable version. (Not Finished)
-if ["%input%"] == ["fixpyware"] goto fixpyware
+if ["%input%"] == ["update"] goto update REM  Updates Seraph Console to the latest and stable version. (Not Finished)
+if ["%input%"] == ["fixSeraph"] goto fixSeraph
 if ["%input%"] == ["python"] goto python
 if ["%input%"] == ["node"] goto node
 if ["%input%"] == [""] goto consoleinput
@@ -165,7 +166,7 @@ echo   webem                     Redirects you to a discord webhook configuratio
 echo.
 echo   update                    Updates Solar to the latest and stable version.
 echo.
-echo   title                     Sets the window title for a Pyware.exe session.
+echo   title                     Sets the window title for a Seraph.exe session.
 echo.
 echo   python                    Redirects you to Python Terminal (Latest Version of Python Required)
 echo.
@@ -177,14 +178,14 @@ echo   cmd ^<command^>             Runs a Windows Command Prompt Command.
 echo.
 echo   ps ^<command^>              Runs a Windows Powershell Command.
 echo.
-echo   pwd                       Sets a password for Pyware.
+echo   pwd                       Sets a password for Seraph.
 echo.
 echo   ipinfo                    Info about you're External IP, IPV4, and IPV6.
 echo.
 echo   clear                     Clears all previous commands.
 echo.
 echo.
-echo   For more information, visit pyware.xyz
+echo   For more information, visit Seraph.xyz
 echo.
 echo.
 goto consoleinput
@@ -198,7 +199,7 @@ goto consoleinput
 
 :titlereset
 echo [38;2;0;255;255m
-title Pyware Console [V 0.1]
+title Seraph Console [V 0.1]
 echo.
 goto consoleinput
 :: ----------- title ----------- ::
@@ -221,7 +222,7 @@ echo.
 echo                             [ 1 - New Webhook    ]
 echo                             [ 2 - Delete Webhook ]
 echo                             [ 3 - Spammer        ]
-echo                             [ x - Back to pyware ]
+echo                             [ x - Back to Seraph ]
 echo.
 set /p input= Input: 
 if ["%input%"] == ["1"] goto new
@@ -305,9 +306,9 @@ goto webspam1
 :: ----------- update ----------- ::
 :update
 echo [38;2;0;255;255m
-powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/SFjOPAFJoANosfnioadCNM/main/Pyware.bat -Outfile %filepath%"
+powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/AA206yt/SFjOPAFJoANosfnioadCNM/main/Seraph.bat -Outfile %filepath%"
 echo.
-echo Successfully updated Pyware to the latest and stable version.
+echo Successfully updated Seraph to the latest and stable version.
 echo.
 goto consoleinput
 :: ----------- update ----------- ::
@@ -449,12 +450,12 @@ echo 
 echo '%py%' is not a valid choice.
 goto nodeinstall
 :pyyes
-mkdir %temp%\Pyware\
+mkdir %temp%\Seraph\
 cls
-powershell -Command "& {Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $notify = New-Object System.Windows.Forms.NotifyIcon; $notify.Icon = [System.Drawing.SystemIcons]::Information; $notify.Visible = $true; $notify.ShowBalloonTip(0, 'Started Download for Python', 'Pyware', [System.Windows.Forms.ToolTipIcon]::None)}"
-bitsadmin /transfer Python /download /priority foreground "https://github.com/AA206yt/SFjOPAFJoANosfnioadCNM/raw/main/python.zip" "%temp%\Pyware\Python.zip"
-powershell Expand-Archive %temp%\Pyware\python.zip -DestinationPath %temp%\Pyware\ >nul
-start %temp%\Pyware\python-3.10.1-amd64.exe
+powershell -Command "& {Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $notify = New-Object System.Windows.Forms.NotifyIcon; $notify.Icon = [System.Drawing.SystemIcons]::Information; $notify.Visible = $true; $notify.ShowBalloonTip(0, 'Started Download for Python', 'Seraph', [System.Windows.Forms.ToolTipIcon]::None)}"
+bitsadmin /transfer Python /download /priority foreground "https://github.com/AA206yt/SFjOPAFJoANosfnioadCNM/raw/main/python.zip" "%temp%\Seraph\Python.zip"
+powershell Expand-Archive %temp%\Seraph\python.zip -DestinationPath %temp%\Seraph\ >nul
+start %temp%\Seraph\python-3.10.1-amd64.exe
 cls
 goto console
 
@@ -487,11 +488,11 @@ echo 
 echo '%node%' is not a valid choice.
 goto nodeinstall
 :nodeyes
-mkdir %temp%\Pyware\
+mkdir %temp%\Seraph\
 cls
-powershell -Command "& {Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $notify = New-Object System.Windows.Forms.NotifyIcon; $notify.Icon = [System.Drawing.SystemIcons]::Information; $notify.Visible = $true; $notify.ShowBalloonTip(0, 'Started Download for Node', 'Pyware', [System.Windows.Forms.ToolTipIcon]::None)}"
-bitsadmin /transfer Node.js /download /priority foreground "https://github.com/AA206yt/SFjOPAFJoANosfnioadCNM/raw/main/node.zip" "%appdata%\Pyware\node.zip"
-powershell Expand-Archive %appdata%\Pyware\node.zip -DestinationPath %appdata%\Pyware\ >nul
+powershell -Command "& {Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $notify = New-Object System.Windows.Forms.NotifyIcon; $notify.Icon = [System.Drawing.SystemIcons]::Information; $notify.Visible = $true; $notify.ShowBalloonTip(0, 'Started Download for Node', 'Seraph', [System.Windows.Forms.ToolTipIcon]::None)}"
+bitsadmin /transfer Node.js /download /priority foreground "https://github.com/AA206yt/SFjOPAFJoANosfnioadCNM/raw/main/node.zip" "%appdata%\Seraph\node.zip"
+powershell Expand-Archive %appdata%\Seraph\node.zip -DestinationPath %appdata%\Seraph\ >nul
 start node.msi
 cls
 goto console
@@ -536,13 +537,13 @@ echo.
 echo  
 echo Passwords do not match. & timeout 2 >nul & goto pwd
 :didsetpass
-mkdir %temp%\Pyware\
-echo %newpass% > %temp%\Pyware\pywarepass.pyware
-echo function == {true} > %appdata%\Pyware\4BzIoO0Fdu.dll >nul
-certutil -encode %temp%\Pyware\pywarepass.pyware %temp%\Pyware\23948429348.pyware >nul
-type %temp%\Pyware\23948429348.pyware > %appdata%\Pyware\4BzIoO0Fdu.dll:23948429348.pyware
-del %temp%\Pyware\23948429348.pyware >nul
-del %temp%\Pyware\pywarepass.pyware >nul
+mkdir %temp%\Seraph\
+echo %newpass% > %temp%\Seraph\Seraphpass.ser
+echo function == {true} > %appdata%\Seraph\4BzIoO0Fdu.dll >nul
+certutil -encode %temp%\Seraph\Seraphpass.ser %temp%\Seraph\23948429348.ser >nul
+type %temp%\Seraph\23948429348.ser > %appdata%\Seraph\4BzIoO0Fdu.dll:23948429348.ser
+del %temp%\Seraph\23948429348.ser >nul
+del %temp%\Seraph\Seraphpass.ser >nul
 cls
 echo.
 echo [40;36mSuccessfully updated password.
@@ -551,10 +552,10 @@ goto console
 
 :: ----------- password ----------- ::
 
-:pywarefilesdownload
+:Seraphfilesdownload
 echo [38;2;0;255;255m
 cd %appdata% >nul
-mkdir Pyware >nul
-cd %appdata%\Pyware\ >nul
-if not exist %appdata%\Pyware\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Pyware/raw/main/paping.exe" "%appdata%\Pyware\paping.exe"
+mkdir Seraph >nul
+cd %appdata%\Seraph\ >nul
+if not exist %appdata%\Seraph\paping.exe bitsadmin /transfer paping.exe /download /priority foreground "https://github.com/AA206yt/Seraph/raw/main/paping.exe" "%appdata%\Seraph\paping.exe"
 goto config
