@@ -34,6 +34,7 @@ set "psCommand=powershell -Command "$pword = read-host 'Enter Password' -AsSecur
         [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)""
 for /f "usebackq delims=" %%p in (`%psCommand%`) do set password=%%p
 if %password% == %Build% goto variables
+echo  
 echo Incorrect Password.
 timeout 2 >nul
 goto passwd
