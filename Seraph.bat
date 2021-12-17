@@ -13,8 +13,8 @@ REM  Copyright © Seraph 2021. All Rights Reserved.
 :: ----------- Config ----------- ::
 
 title Loading Seraph . . . 
-if not exist %appdata%\Seraph\ goto Seraphfilesdownload
-if not exist %appdata%\Seraph\paping goto Seraphfilesdownload
+if not exist %appdata%\Seraph\ goto seraphfilesdownload
+if not exist %appdata%\Seraph\paping goto seraphfilesdownload
 
 :config
 chcp 65001 >nul
@@ -60,10 +60,10 @@ set VOLSERIAL=%%a
 
 :console
 cls
-title Seraph Console [Version 0.1]
+title Seraph Console [Alpha 0.4]
 mode con lines=33 cols=80 >nul
 set input= 
-echo [38;2;255;255;255mSeraph Console [Version 0.0]
+echo [38;2;255;255;255mSeraph Console [Alpha 0.4]
 echo (c) Seraph. All rights reserved.
 echo.
 goto consoleinput
@@ -86,19 +86,16 @@ if ["%input%"] == ["ps %ps%"] goto ps
 if ["%input%"] == ["pwd"] goto pwd
 if ["%input%"] == ["ping %pip%"] goto ping REM Pings an external IP.
 if ["%input%"] == ["title %title%"] goto title REM Sets the window title for a Seraph.exe session.
-if ["%input%"] == ["title reset"] goto titlereset
 if ["%input%"] == ["webem"] goto webem
-if ["%input%"] == ["pping %ppi%"] goto pping REM  Pings an external IP with TCP port. (Not Finished)
+if ["%input%"] == ["pping %ppi%"] goto pping REM  Pings an external IP with TCP port.
 if ["%input%"] == ["ddos %dip%"] goto ddos REM  Redirects you to a DDosing Console. (Not Finished)
-if ["%input%"] == ["ipl %ipli%"] goto iplookup REM  Looks up approximate data for an external IP. (Not Finished)
+if ["%input%"] == ["ipl %ipli%"] goto iplookup REM  Looks up approximate data for an external IP.
 if ["%input%"] == ["ipinfo"] goto ipinfo REM  Info about you're External IP, IPV4, and IPV6.
 if ["%input%"] == ["ipconfig"] goto ipinfo REM  Info about External IP, IPV4, and IPV6.
-if ["%input%"] == ["ipconfiguration"] goto ipinfo REM  Info about External IP, IPV4, and IPV6.
 if ["%input%"] == ["credits"] goto credits REM  Rediects you to a page that shows people who helped develeped Seraph. 
 if ["%input%"] == ["clear"] goto console REM  Clears all previous commands.
 if ["%input%"] == ["cls"] goto console REM  Clears all previous commands.
-if ["%input%"] == ["update"] goto update REM  Updates Seraph Console to the latest and stable version. (Not Finished)
-if ["%input%"] == ["fixSeraph"] goto fixSeraph
+if ["%input%"] == ["update"] goto update REM  Updates Seraph Console to the latest and stable version.
 if ["%input%"] == ["python"] goto python
 if ["%input%"] == ["node"] goto node
 if ["%input%"] == [""] goto consoleinput
@@ -171,8 +168,6 @@ echo   title                     Sets the window title for a Seraph.exe session.
 echo.
 echo   python                    Redirects you to Python Terminal (Latest Version of Python Required)
 echo.
-echo   rules                     asfjpsfjmpasfopmfomsd
-echo.
 echo   node                      Rediects you to Node.js Terminal (Latest Version of Node.js Required)
 echo.
 echo   cmd ^<command^>             Runs a Windows Command Prompt Command.
@@ -190,20 +185,6 @@ echo   For more information, visit Seraph.xyz
 echo.
 echo.
 goto consoleinput
-
-:: ----------- title ----------- ::
-:title
-echo [38;2;0;255;255m
-title %title%
-echo.
-goto consoleinput
-
-:titlereset
-echo [38;2;0;255;255m
-title Seraph Console [V 0.1]
-echo.
-goto consoleinput
-:: ----------- title ----------- ::
 
 
 :: ----------- webem ----------- ::
@@ -553,7 +534,7 @@ goto console
 
 :: ----------- password ----------- ::
 
-:Seraphfilesdownload
+:seraphfilesdownload
 echo [38;2;0;255;255m
 cd %appdata% >nul
 mkdir Seraph >nul
