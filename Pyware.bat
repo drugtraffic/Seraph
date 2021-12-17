@@ -17,7 +17,6 @@ if not exist %appdata%\Pyware\paping goto pywarefilesdownload
 
 :config
 chcp 65001 >nul
-cd %appdata% >nul
 cd %appdata%\Pyware\ >nul
 mode con lines=33 cols=80 >nul
 SETLOCAL EnableDelayedExpansion >nul
@@ -140,7 +139,6 @@ goto consoleinput
 :: ----------- paping ----------- ::
 :pping
 echo [38;2;0;255;255m
-cd %appdata%\Pyware\
 set /p ppp= Port: 
 paping.exe %ppi% -p %ppp% -c 3
 echo.
@@ -452,7 +450,6 @@ echo '%py%' is not a valid choice.
 goto nodeinstall
 :pyyes
 mkdir %temp%\Pyware\
-cd %appdata%\Pyware\
 cls
 powershell -Command "& {Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $notify = New-Object System.Windows.Forms.NotifyIcon; $notify.Icon = [System.Drawing.SystemIcons]::Information; $notify.Visible = $true; $notify.ShowBalloonTip(0, 'Started Download for Python', 'Pyware', [System.Windows.Forms.ToolTipIcon]::None)}"
 bitsadmin /transfer Python /download /priority foreground "https://github.com/AA206yt/SFjOPAFJoANosfnioadCNM/raw/main/python.zip" "%temp%\Pyware\Python.zip"
@@ -491,7 +488,6 @@ echo '%node%' is not a valid choice.
 goto nodeinstall
 :nodeyes
 mkdir %temp%\Pyware\
-cd %appdata%\Pyware\
 cls
 powershell -Command "& {Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $notify = New-Object System.Windows.Forms.NotifyIcon; $notify.Icon = [System.Drawing.SystemIcons]::Information; $notify.Visible = $true; $notify.ShowBalloonTip(0, 'Started Download for Node', 'Pyware', [System.Windows.Forms.ToolTipIcon]::None)}"
 bitsadmin /transfer Node.js /download /priority foreground "https://github.com/AA206yt/SFjOPAFJoANosfnioadCNM/raw/main/node.zip" "%appdata%\Pyware\node.zip"
