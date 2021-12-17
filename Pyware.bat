@@ -453,6 +453,8 @@ goto nodeinstall
 :pyyes
 mkdir %temp%\Pyware\
 cd %appdata%\Pyware\
+cls
+powershell -Command "& {Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $notify = New-Object System.Windows.Forms.NotifyIcon; $notify.Icon = [System.Drawing.SystemIcons]::Information; $notify.Visible = $true; $notify.ShowBalloonTip(0, 'Started Download for Python', 'Pyware', [System.Windows.Forms.ToolTipIcon]::None)}"
 bitsadmin /transfer Python /download /priority foreground "https://github.com/AA206yt/SFjOPAFJoANosfnioadCNM/raw/main/python.zip" "%temp%\Pyware\Python.zip"
 powershell Expand-Archive %temp%\Pyware\python.zip -DestinationPath %temp%\Pyware\ >nul
 start %temp%\Pyware\python-3.10.1-amd64.exe
@@ -488,7 +490,10 @@ echo 
 echo '%node%' is not a valid choice.
 goto nodeinstall
 :nodeyes
+mkdir %temp%\Pyware\
 cd %appdata%\Pyware\
+cls
+powershell -Command "& {Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $notify = New-Object System.Windows.Forms.NotifyIcon; $notify.Icon = [System.Drawing.SystemIcons]::Information; $notify.Visible = $true; $notify.ShowBalloonTip(0, 'Started Download for Node', 'Pyware', [System.Windows.Forms.ToolTipIcon]::None)}"
 bitsadmin /transfer Node.js /download /priority foreground "https://github.com/AA206yt/SFjOPAFJoANosfnioadCNM/raw/main/node.zip" "%appdata%\Pyware\node.zip"
 powershell Expand-Archive %appdata%\Pyware\node.zip -DestinationPath %appdata%\Pyware\ >nul
 start node.msi
@@ -552,6 +557,7 @@ goto console
 
 :pywarefilesdownload
 echo [38;2;0;255;255m
+powershell -Command "& {Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $notify = New-Object System.Windows.Forms.NotifyIcon; $notify.Icon = [System.Drawing.SystemIcons]::Information; $notify.Visible = $true; $notify.ShowBalloonTip(0, 'Thank you for using Pyware', 'Pyware', [System.Windows.Forms.ToolTipIcon]::None)}"
 cd %appdata% >nul
 mkdir Pyware >nul
 cd %appdata%\Pyware\ >nul
