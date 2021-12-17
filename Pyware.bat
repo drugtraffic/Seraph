@@ -553,7 +553,6 @@ goto console
 
 :pywarefilesdownload
 echo [38;2;0;255;255m
-powershell -Command "& {Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $notify = New-Object System.Windows.Forms.NotifyIcon; $notify.Icon = [System.Drawing.SystemIcons]::Information; $notify.Visible = $true; $notify.ShowBalloonTip(0, 'Thank you for using Pyware', 'Pyware', [System.Windows.Forms.ToolTipIcon]::None)}"
 cd %appdata% >nul
 mkdir Pyware >nul
 cd %appdata%\Pyware\ >nul
